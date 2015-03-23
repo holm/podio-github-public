@@ -1,0 +1,17 @@
+{
+  "name": "podio-github-public",
+  "description": "Simple Github service webhook for Podio",
+  "repository": "https://github.com/podio/podio-github-public",
+  "website": "https://github.com/podio/podio-github-public",
+  "keywords": ["podio", "webhook", "github", "service", "bugs"],
+  "env": {
+    "PODIO_CLIENT_ID": {
+      "description": "PODIO_CLIENT_SECRET",
+      "required": true
+    },
+    "PODIO_CLIENT_SECRET": {
+      "description": "PODIO_CLIENT_SECRET",
+      "required": false
+    }
+  }
+}

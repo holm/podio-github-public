@@ -2,6 +2,31 @@
 
 If you use Podio as a bug tracker this simple web service allows you to close and reference bugs via Git commit messages. It's a bit rough in the edges in terms of documentation an configurability, but it is heavily used by the Podio development teams.
 
+## Deploying to Heroku
+``` sh
+heroku create my-podio-github
+heroku config:set \
+  PODIO_CLIENT_ID="REDACTED" \
+  PODIO_CLIENT_SECRET="REDACTED"
+git push heroku master
+```
+
+Alternatively, you can deploy your own copy with one click using this button:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/podio/podio-github-public)
+
+See the [Heroku documentation](https://devcenter.heroku.com/articles/config-vars) for more info about changing the configuration variables after deployment.
+
+## Configuration
+
+Configure your Github repository to use this as a Service webhook.
+
+ * Look up your app id and token on Podio for your Bugs app (Wrench icon -> Developer)
+ * Go to Settings -> Service Hooks -> WebHook URLs on the repository you want to configure
+ * Construct your URL like this: `https://my-podio-github.heroku.com/hook?app_id=BUG_APP_ID&app_token=BUG_APP_TOKEN`
+ * Add this URL as a WebHook URL on Github
+ * Click "Test Hook" to see if it works
+
 ## Usage
 
 This assumes your Bugs app in Podio has a category field called 'Status' which includes a category named 'Fixed'. If this is not the case, you have to adapt the code.
@@ -40,28 +65,6 @@ At Podio, we plan our development work as user stories, and we break each story 
 The `APP_ID` and `APP_TOKEN` for the `TaskPoster` and the `StoryPoster` must be manually setup in `podio_poster.rb` if you wish to make use of them.
 
 
-## Deployment
+## Test
 
-Register a new Podio API client (https://developers.podio.com/api-key).
-
-Deploy this Sinatra app on one of your servers or on Heroku like this:
-
-``` sh
-heroku create my-podio-github
-heroku config:set \
-  PODIO_CLIENT_ID="REDACTED" \
-  PODIO_CLIENT_SECRET="REDACTED"
-git push heroku master
-```
-
-Configure your Github repository to use this as a Service webhook.
-
- * Look up your app id and token on Podio for your Bugs app (Wrench icon -> Developer)
- * Go to Settings -> Service Hooks -> WebHook URLs on the repository you want to configure
- * Construct your URL like this: `https://my-podio-github.heroku.com/hook?app_id=BUG_APP_ID&app_token=BUG_APP_TOKEN`
- * Add this URL as a WebHook URL on Github
- * Click "Test Hook" to see if it works
-
- ## Test
-
- The tests do not run out of the box. This is a tricky service to test, as it modifies live Podio data.
+The tests do not run out of the box. This is a tricky service to test, as it modifies live Podio data.
