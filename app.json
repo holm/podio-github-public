@@ -3,6 +3,7 @@
   "description": "Simple Github service webhook for Podio",
   "repository": "https://github.com/podio/podio-github-public",
   "website": "https://github.com/podio/podio-github-public",
+  "logo": "https://avatars2.githubusercontent.com/u/446761",
   "keywords": ["podio", "webhook", "github", "service", "bugs"],
   "env": {
     "PODIO_CLIENT_ID": {
