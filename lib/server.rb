@@ -19,7 +19,7 @@ class WebHookServer < Sinatra::Base
     if parsed_commits
       parsed_commits.each do |commit|
         if commit[:bug]
-          podio_poster = Podio::BugPoster.new(params[:app_id], params[:app_token])
+          podio_poster = Podio::BugPoster.new(params[:app_id].to_i, params[:app_token])
           podio_poster.process([commit[:bug]])
         end
 

@@ -1,11 +1,5 @@
 module Podio
   class BasePoster
-    def initialize(app_id, app_token)
-      puts app_id.inspect
-      puts app_token.inspect
-      @app_id = app_id
-      @podio_client = setup_client(app_id.to_i, app_token)
-    end
 
     def setup_client(app_id, app_token)
       podio_client = Podio::Client.new({
@@ -55,7 +49,8 @@ module Podio
 
   class BugPoster < BasePoster
     def initialize(app_id, app_token)
-      super
+      @app_id = app_id
+      @podio_client = setup_client(app_id, app_token)
       @current_release_id = find_current_release_hardcoded
     end
 
