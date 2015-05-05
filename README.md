@@ -24,6 +24,7 @@ Configure your Github repository to use this as a Service webhook.
  * Look up your app id and token on Podio for your Bugs app (Wrench icon -> Developer)
  * Go to Settings -> Service Hooks -> WebHook URLs on the repository you want to configure
  * Construct your URL like this: `https://my-podio-github.heroku.com/hook?app_id=BUG_APP_ID&app_token=BUG_APP_TOKEN`
+ * The Content Type should be set to "application/x-www-form-urlencoded"
  * Add this URL as a WebHook URL on Github
  * Click "Test Hook" to see if it works
 
