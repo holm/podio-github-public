@@ -52,22 +52,8 @@ module Podio
     def initialize(app_id, app_token)
       @app_id = app_id
       @podio_client = setup_client(app_id, app_token)
-      @current_release_id = find_current_release_hardcoded
     end
-
-    def find_current_release_hardcoded
-      release_app_id = 1234
-      release_app_token = 'REDACTED'
-      state_field_id = 1234
-
-      podio_release_client = setup_client(release_app_id, release_app_token)
-
-      items = podio_release_client.connection.get("/item/app/#{release_app_id}/?limit=1&#{state_field_id}=1&sort_by=title&sort_desc=0").body['items']
-      return if items.empty?
-
-      items.first['item_id']
-    end
-
+    
     def set_status_to_fixed(item, comment)
       status_field = item['fields'].find { |field| field['external_id'] == 'status' && field['status'] =='active' }
       return if status_field.nil?
@@ -80,10 +66,6 @@ module Podio
       else
         # old status field
         fields << {:external_id => 'status', :values => [{'value' => 'Fixed'}]}
-      end
-
-      if @current_release_id
-        fields << {:external_id => 'release', :values => [{'value' => @current_release_id}]}
       end
 
       @podio_client.connection.put do |req|
