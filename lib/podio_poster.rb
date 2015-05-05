@@ -6,6 +6,7 @@ module Podio
         :api_key => ENV["PODIO_CLIENT_ID"],
         :api_secret => ENV["PODIO_CLIENT_SECRET"]
       })
+      puts "Authenticating with #{app_id} and #{app_token}"
       podio_client.authenticate_with_app(app_id, app_token)
 
       podio_client
