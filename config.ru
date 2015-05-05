@@ -8,4 +8,6 @@ end
 
 require "#{File.expand_path("../", __FILE__)}/lib/server"
 
+$stdout.sync = true
+
 run WebHookServer
