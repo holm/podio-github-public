@@ -1,6 +1,7 @@
 module Podio
   class BasePoster
     def initialize(app_id, app_token)
+      puts app_id, app_token
       @app_id = app_id
       @podio_client = setup_client(app_id, app_token)
     end
