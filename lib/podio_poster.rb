@@ -46,6 +46,12 @@ module Podio
     rescue Podio::AuthorizationError, Podio::GoneError, Podio::NotFoundError
       nil
     end
+
+    protected
+
+    def find_field(item, type, identifier)
+      item['fields'].find { |field| field['type'] == type && (field['external_id'] == identifier || field['config']['label'].casecmp(identifier).zero?) && field['status'] =='active' }
+    end
   end
 
   class BugPoster < BasePoster
@@ -55,18 +61,13 @@ module Podio
     end
     
     def set_status_to_fixed(item, comment)
-      status_field = item['fields'].find { |field| field['external_id'] == 'status' && field['status'] =='active' }
+      status_field = find_field('category', 'status')
       return if status_field.nil?
 
       fields = []
 
-      if status_field['type'] == 'category'
-        option_id = status_field['config']['settings']['options'].find { |option| option['text'] == 'Fixed' }['id']
-        fields << {:external_id => 'status', :values => [{'value' => option_id}]}
-      else
-        # old status field
-        fields << {:external_id => 'status', :values => [{'value' => 'Fixed'}]}
-      end
+      option_id = status_field['config']['settings']['options'].find { |option| option['text'] == 'Fixed' }['id']
+      fields << {:external_id => 'status', :values => [{'value' => option_id}]}
 
       @podio_client.connection.put do |req|
         req.url "/item/#{item['item_id']}/value"
