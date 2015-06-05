@@ -61,7 +61,7 @@ module Podio
     end
     
     def set_status_to_fixed(item, comment)
-      status_field = find_field('category', 'status')
+      status_field = find_field(item, 'category', 'status')
       return if status_field.nil?
 
       fields = []
