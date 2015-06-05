@@ -67,7 +67,7 @@ module Podio
       fields = []
 
       option_id = status_field['config']['settings']['options'].find { |option| option['text'] == 'Fixed' }['id']
-      fields << {:external_id => 'status', :values => [{'value' => option_id}]}
+      fields << {:external_id => status_field['external_id'], :values => [{'value' => option_id}]}
 
       @podio_client.connection.put do |req|
         req.url "/item/#{item['item_id']}/value"
