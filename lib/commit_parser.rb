@@ -13,10 +13,8 @@ module CommitParser
 
   def self.parse_commit(commit)
     parsed_item_groups = extract_items_with_actions(commit['message'])
-    parsed_item_groups.each do |group, items|
-      items.each do |item, data|
-        data[:comment] = format_comment(commit)
-      end
+    parsed_item_groups.each do |item, data|
+      data[:comment] = format_comment(commit)
     end
 
     parsed_item_groups
@@ -31,8 +29,8 @@ module CommitParser
     "(#{author}, in [[#{id}]](#{url})) #{message}"
   end
 
-  def self.extract_items_with_actions(message, default_prefix = :bug)
-    ticket_prefix = '(?:#|(?:(bug|task|story)?)[: ]?)'
+  def self.extract_items_with_actions(message)
+    ticket_prefix = '(?:#)'
     ticket_reference = ticket_prefix + '[0-9]+'
     # ticket_command = /([A-Za-z]*)\s*.?\s*(#{ticket_reference}(?:(?:[, &]*|[ ]?and[ ]?)#{ticket_reference})*)/
     all_commands = (CLOSE_COMMANDS + REF_COMMANDS).join('|')
@@ -49,10 +47,8 @@ module CommitParser
 
       next if action.nil?
 
-      ticket_ids.scan(ticket_re).each do |prefix, id|
-        prefix ||= default_prefix
-        parsed_items[prefix.to_sym] ||= {}
-        parsed_items[prefix.to_sym][id.to_i] = {:action => action}
+      ticket_ids.scan(ticket_re).each do |id|
+        parsed_items[id[0].to_i] = {:action => action}
       end
     end
 

@@ -3,10 +3,6 @@ require "#{File.expand_path("../", __FILE__)}/commit_parser"
 require "#{File.expand_path("../", __FILE__)}/podio_poster"
 
 class WebHookServer < Sinatra::Base
-  # configure do
-  #   set :raise_errors, true
-  #   set :show_exceptions, false
-  # end
 
   get '/' do
     "It works"
@@ -18,21 +14,8 @@ class WebHookServer < Sinatra::Base
     parsed_commits = CommitParser.parse_payload(params[:payload])
     if parsed_commits
       parsed_commits.each do |commit|
-        puts commit
-        if commit[:bug]
-          podio_poster = Podio::BugPoster.new(params[:app_id].to_i, params[:app_token])
-          podio_poster.process([commit[:bug]])
-        end
-
-        if commit[:task]
-          podio_poster = Podio::TaskPoster.new
-          podio_poster.process([commit[:task]])
-        end
-
-        if commit[:story]
-          podio_poster = Podio::StoryPoster.new
-          podio_poster.process([commit[:story]])
-        end
+        podio_poster = Podio::Poster.new(params[:app_id].to_i, params[:app_token], params[:field], params[:value])
+        podio_poster.process([commit[:bug]])
       end
     end
 
